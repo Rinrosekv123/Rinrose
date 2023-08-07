@@ -1,0 +1,63 @@
+class BankAccount:
+    def __init__(self, account_number, pin):
+        self.account_number = account_number
+        self.pin = pin
+        self.balance = 0.0
+
+    def deposit(self, amount):
+        self.balance += amount
+        print(f"Deposited {amount}. New balance: {self.balance} .")
+
+    def withdraw(self, amount):
+        if self.balance >= amount:
+            self.balance -= amount
+            print(f"Withdraw {amount}. New balance: {self.balance}.")
+        else:
+            print("Insufficient balance. Withdrawal canceled.")
+
+def account_login(accounts):
+    account_number = input("Enter your account number: ")
+    pin = input("Enter your PIN: ")
+
+    if account_number in accounts and accounts[account_number].pin == pin:
+        return accounts[account_number]
+    else:
+        print("Invalid account number or PIN.")
+        return None
+
+def main():
+    # Dummy data for accounts (replace this with a proper database or file storage)
+    accounts = {
+        "43210": BankAccount("43210", "1111"),
+        "67890": BankAccount("67890", "2222"),
+    }
+
+    logged_in_account = None
+    while not logged_in_account:
+        logged_in_account = account_login(accounts)
+
+    while True:
+        print("1. Deposit")
+        print("2. Withdraw")
+        print("3. Check Balance")
+        print("4. Logout")
+        choice = input("Enter your choice (1/2/3/4): ")
+
+        if choice == "1":
+            amount = float(input("Enter the amount to deposit: "))
+            logged_in_account.deposit(amount)
+        elif choice == "2":
+            amount = float(input("Enter the amount to withdraw: "))
+            logged_in_account.withdraw(amount)
+        elif choice == "3":
+            print(f"Your balance: {logged_in_account.balance} units.")
+        elif choice == "4":
+            print("Logged out successfully.")
+            logged_in_account = None
+            while not logged_in_account:
+                logged_in_account = account_login(accounts)
+        else:
+            print("Invalid choice. Please select again.")
+
+if __name__ == "__main__":
+    main()
